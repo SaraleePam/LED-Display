@@ -12,7 +12,7 @@ RANGE_NAME = 'Sheet1!A1:B'
 
 
 # Get credentials from the token file
-creds = Credentials.from_authorized_user_file('/home/afc/LED-Display/GoogleAPI/token.json', SCOPES)
+creds = Credentials.from_authorized_user_file('/Users/saralees/Documents/GitHub/LED-Display/GoogleAPI/token.json', SCOPES)
 service = build('sheets', 'v4', credentials=creds)
 
 # Call the Sheets API
