@@ -34,6 +34,7 @@ def main():
             flow = InstalledAppFlow.from_client_secrets_file(
                 '/Users/saralees/Documents/GitHub/LED-Display/GoogleAPI/credentials.json', SCOPES)
             creds = flow.run_local_server(port=0)
+        #/home/afc/LED-Display/GoogleAPI/credentials.json  - for RasPi
         # Save the credentials for the next run
         with open('token.json', 'w') as token:
             token.write(creds.to_json())
