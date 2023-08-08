@@ -9,7 +9,7 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of the spreadsheet
 SPREADSHEET_ID = '1VOnFzvLX1b26OtMFG4rKbH1HoCr9RUDB_HlAsYFuMKE'
-RANGE_NAME = 'Sheet1!C:C'
+RANGE_NAME = 'Sheet1!B:B'
 
 
 # Get credentials from the token file
