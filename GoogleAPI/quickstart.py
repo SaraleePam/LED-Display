@@ -12,7 +12,7 @@ from googleapiclient.errors import HttpError
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of a sample spreadsheet.
-SAMPLE_SPREADSHEET_ID = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
+SAMPLE_SPREADSHEET_ID = '1eaBajMfueU2uvCFLjPqyURRJDLRCmAa6_Raf8pb5bvk'
 SAMPLE_RANGE_NAME = 'Class Data!A2:E'
 
 
@@ -32,7 +32,7 @@ def main():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                '/Users/saralees/Documents/GitHub/LED-Display/GoogleAPI/credentials.json', SCOPES)
+                '/home/afc/LED-Display/credentials.json', SCOPES)
             creds = flow.run_local_server(port=0)
         #/home/afc/LED-Display/GoogleAPI/credentials.json  - for RasPi
         # Save the credentials for the next run
