@@ -1,8 +1,12 @@
+#include <Arduino.h>
+
+
+
 // This simplified demo scrolls the text of the Jaberwoky poem directly from flash memory
 // Full article at  http://wp.josh.com/2016/05/20/huge-scrolling-arduino-led-sign/
 // Change this to be at least as long as your pixel string (too long will work fine, just be a little slower)
 
-#define PIXEL_COUNT 144  // Number of pixels in the string. I am using 4 meters of 96LED/M
+#define PIXEL_COUNT 70  // Number of pixels in the string. I am using 4 meters of 96LED/M
 
 // These values depend on which pins your 8 strings are connected to and what board you are using 
 // More info on how to find these at http://www.arduino.cc/en/Reference/PortManipulation
@@ -1093,9 +1097,12 @@ void scrollString( const char *s ) {
   
 }
         
-
+char buf[80];
 
 void setup() {
+
+Serial.begin(9600);
+
   PIXEL_DDR |= onBits;         // Set used pins to output mode
 
   // This eems to reset some stuck pixels and leaves all outputs cleanly low
@@ -1104,9 +1111,33 @@ void setup() {
   PIXEL_PORT &= ~onBits;       // Set all outputs to 0
   delay( 100);
 
-  //Serial.begin(9600);
   
 }
+
+
+
+int readline(int readch, char *buffer, int len) {
+    static int pos = 0;
+    int rpos;
+
+    if (readch > 0) {
+        switch (readch) {
+            case '\r': // Ignore CR
+                break;
+            case '\n': // Return on new-line
+                rpos = pos;
+                pos = 0;  // Reset position index ready for next time
+                return rpos;
+            default:
+                if (pos < len-1) {
+                    buffer[pos++] = readch;
+                    buffer[pos] = 0;
+                }
+        }
+    }
+    return 0;
+}
+
 
 static char jabberText[] = 
       "                                       " 
@@ -1147,20 +1178,38 @@ static char jabberText[] =
       
       ;
 
-
 void loop() {
+
+  int x=-10;
+
 
   //sendString( "josh is very nice and I like him." , 0 , 0x00, 0x00 , 0x42 );    // Nice and not-too-bright blue hue         
 
-  int x=-10;
+  if (readline(Serial.read(), buf, 80) > 0) {
+      String command = String(buf);
+      Serial.print("You entered: >");
+      Serial.print(command);
+      Serial.println("<");
+
   
-  while (1) {
-    scrollString(  "josh is #440000very#000040 nice and I like him." );
-    drawString( "1234567890." , x  );
-    x++;
-    delay(1000);
-  }
-  while (1); 
-  scrollString( jabberText );
+    
+    /*if (Serial.available() > 0) {
+      String command = Serial.readString();*/
+  
+      // Check if the command is to move the stepper motor
+      if (command.startsWith("TEXT ")) {
+        // Extract the target position from the command
+        //NewMessage = command.substring(5).toInt();
+        const char* Message = command.c_str();
+
+ 
+        scrollString(  Message );
+        drawString( "1234567890." , x  );
+        x++;
+        delay(1000);
+      }
+  
+
+}
 
 }

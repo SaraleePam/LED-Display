@@ -8,7 +8,7 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of the spreadsheet
 SPREADSHEET_ID = '1VOnFzvLX1b26OtMFG4rKbH1HoCr9RUDB_HlAsYFuMKE'
-RANGE_NAME = 'Sheet1!A1:B'
+RANGE_NAME = 'Sheet1!C:C'
 
 
 # Get credentials from the token file
@@ -18,12 +18,13 @@ service = build('sheets', 'v4', credentials=creds)
 # Call the Sheets API
 sheet = service.spreadsheets()
 result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME).execute()
+
 values = result.get('values', [])
 
 ######
 
 
-ser = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
+ser = serial.Serial(port='/dev/ttyACM1', baudrate=9600)
 print("Initializing connection....")
 time.sleep(3)
 ser.reset_input_buffer()
@@ -44,9 +45,17 @@ print("connected to: " + ser.portstr)
 while True:
 
     time.sleep(5)
-    print(values)
-    ser.write(('TEXT ' + str(values) + '\n').encode())
-    
+
+    for row in values:
+        # Assuming each row has two columns (A and B), modify this part as per your data structure
+       # text_to_send = row[-1]
+        text_to_send = row[-1]
+        ser.write(('TEXT ' + str(text_to_send) + '\n').encode())
+        time.sleep(5)
+        
+        print(text_to_send)
+        
+
 
            
 # #ser.close()

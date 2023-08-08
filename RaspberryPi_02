@@ -8,17 +8,21 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of the spreadsheet
 SPREADSHEET_ID = '1VOnFzvLX1b26OtMFG4rKbH1HoCr9RUDB_HlAsYFuMKE'
-RANGE_NAME = 'Sheet1!A1:B'
+RANGE_NAME = 'Sheet1!C:C'
 
 
 # Get credentials from the token file
 creds = Credentials.from_authorized_user_file('/home/afc/LED-Display/GoogleAPI/token.json', SCOPES)
 service = build('sheets', 'v4', credentials=creds)
 
-# Call the Sheets API
-sheet = service.spreadsheets()
-result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME).execute()
-values = result.get('values', [])
+# Call the Sheets API]
+
+def get_data():
+
+    sheet = service.spreadsheets()
+    result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME).execute()
+    values = result.get('values', [])
+    return values
 
 ######
 
@@ -31,22 +35,21 @@ print("HELLO!")
 print("connected to: " + ser.portstr)
 
 
-# def get_text():
-#     now = datetime.datetime.now()
-#     minute = now.minute
-#     second = now.second
-#     hour = now.hour
-#     currentsec = (hour * 3600) + (minute * 60) + second
-#     return (currentsec / 86400.0) * 360.0
-
-
-
 while True:
 
     time.sleep(5)
-    print(values)
-    ser.write(('TEXT ' + str(values) + '\n').encode())
-    
 
-           
+    for row in get_data():
+        # Assuming each row has two columns (A and B), modify this part as per your data structure
+       # text_to_send = row[-1]
+        text_to_send = row[-1]
+        ser.write(( str(text_to_send) + '\n').encode())
+        time.sleep(5)
+        
+        print(text_to_send)
+        
+
+        
 # #ser.close()
+
+

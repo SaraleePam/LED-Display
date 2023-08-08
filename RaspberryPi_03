@@ -1,0 +1,101 @@
+import time
+import serial
+from googleapiclient.discovery import build
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+
+
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+
+# The ID and range of the spreadsheet
+SPREADSHEET_ID = '1VOnFzvLX1b26OtMFG4rKbH1HoCr9RUDB_HlAsYFuMKE'
+RANGE_NAME = 'Sheet1!C:C'
+
+
+# Get credentials from the token file
+creds = Credentials.from_authorized_user_file('/home/afc/LED-Display/GoogleAPI/token.json', SCOPES)
+service = build('sheets', 'v4', credentials=creds)
+
+# Call the Sheets API]
+
+
+def refresh_access_token(creds):
+    if creds and creds.expired and creds.refresh_token:
+        creds.refresh(Request())
+
+# Example usage:
+# Assuming you have a `credentials` object obtained during the initial authentication
+refresh_access_token(creds)
+
+# Now, use the `credentials` object to make API requests
+
+
+def get_data():
+
+    sheet = service.spreadsheets()
+    result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME).execute()
+    values = result.get('values', [])
+    return values
+
+######
+
+
+def open_serial_port():
+    # Try to open serial port '/dev/ttyACM0'
+    try:
+        ser = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
+        print("Serial port successfully opened on /dev/ttyACM0")
+        return ser
+    except serial.SerialException:
+        print("Failed to open serial port on /dev/ttyACM0")
+
+    # Try to open serial port '/dev/ttyACM1'
+    try:
+        ser = serial.Serial(port='/dev/ttyACM1', baudrate=9600)
+        print("Serial port successfully opened on /dev/ttyACM1")
+        return ser
+    except serial.SerialException:
+        print("Failed to open serial port on /dev/ttyACM1")
+
+    # If both attempts fail, return None
+    return None
+
+# Open the serial port
+ser = open_serial_port()
+
+# # Check if the serial port was successfully opened
+#     if ser is not None:
+#         # Now you can use the serial port for communication
+#         # For example, you can read data from the port using ser.read() or ser.readline()
+#         # Remember to close the serial port when you are done: ser.close()
+#     else:
+#         print("Failed to open serial port on both /dev/ttyACM0 and /dev/ttyACM1. Exiting...")
+
+
+
+
+print("Initializing connection....")
+time.sleep(3)
+ser.reset_input_buffer()
+print("HELLO!")
+print("connected to: " + ser.portstr)
+
+
+while True:
+
+    time.sleep(5)
+
+    for row in get_data():
+        # Assuming each row has two columns (A and B), modify this part as per your data structure
+       # text_to_send = row[-1]
+        text_to_send = row[-1]
+        ser.write(( str(text_to_send) + '\n').encode())
+        time.sleep(5)
+        
+        print(text_to_send)
+        
+
+        
+# #ser.close()
+
+###
