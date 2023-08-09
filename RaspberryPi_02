@@ -28,7 +28,7 @@ def get_data():
 ######
 
 
-ser = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
+ser = serial.Serial(port='/dev/ttyACM0', baudrate=9600, exclusive=True)
 print("Initializing connection....")
 time.sleep(3)
 ser.reset_input_buffer()
