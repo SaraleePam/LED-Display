@@ -4,11 +4,12 @@ from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 
+
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of the spreadsheet
 SPREADSHEET_ID = '1eaBajMfueU2uvCFLjPqyURRJDLRCmAa6_Raf8pb5bvk'
-RANGE_NAME = 'Sheet1!C:C'
+RANGE_NAME = 'FormResponses!B:B'
 
 
 # Get credentials from the token file
