@@ -43,7 +43,7 @@ def get_data():
 def open_serial_port():
     # Try to open serial port '/dev/ttyACM0'
     try:
-        ser = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
+        ser = serial.Serial(port='/dev/ttyACM0', baudrate=9600, exclusive=True)
         print("Serial port successfully opened on /dev/ttyACM0")
         return ser
     except serial.SerialException:
@@ -51,7 +51,7 @@ def open_serial_port():
 
     # Try to open serial port '/dev/ttyACM1'
     try:
-        ser = serial.Serial(port='/dev/ttyACM1', baudrate=9600)
+        ser = serial.Serial(port='/dev/ttyACM1', baudrate=9600, exclusive=True)
         print("Serial port successfully opened on /dev/ttyACM1")
         return ser
     except serial.SerialException:
