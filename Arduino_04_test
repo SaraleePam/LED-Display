@@ -901,7 +901,7 @@ struct displayState_t {
   
 };
 displayState_t displayState = {
-  { 0x40 , 0x00 , 0x00 } ,      
+  { 0x40 , 0x20 , 0x00 } ,        // nice blue
   
 };
 
@@ -933,7 +933,7 @@ constexpr size_t size(T (&)[N]) { return N; }
 // So if you draw a string with start_col=0, then the first col of the first letter will be in the rightmost col of the display
 // and the rest will be blank. 
 // To show the string starting at the leftmost col of the display, use drawString( s , PIXEL_COUNT );
-void drawString( s , PIXEL_COUNT ) {
+void drawString( const char *s , int start_col ) {
 
   unsigned int l=PIXEL_COUNT; // L is the col we are currently sending to the LEDs. Note we do not start sending to the LEDs until we get to start_col 
 
@@ -1027,7 +1027,7 @@ void scrollString( const char *s ) {
 
   for( int step= -1 * pixel_len ; step<  pixel_len ; step++ ) {   // step though each column of the 1st char for smooth scrolling
 
-    drawString( s , step  );      
+    drawString( s , step  );    // Nice and not-too-bright blue hue         
     delay(10);
      
   }
@@ -1041,16 +1041,16 @@ char buf[80];
 
 void setup() {
 
-    Serial.begin(9600);
-    
-    UCSR0B &= ~_BV(TXEN0);      // Disable USART TX, return pin D1 to normal digital mode
+Serial.begin(9600);
+  UCSR0B &= ~_BV(TXEN0);      // Disable USART TX, return pin D1 to normal digital mode
 
-    PIXEL_DDR |= onBits;        // Set used pins to output mode
-    // This eems to reset some stuck pixels and leaves all outputs cleanly low
-    PIXEL_PORT |= onBits;       // Set all outputs to 1
-    delay( 100);
-    PIXEL_PORT &= ~onBits;       // Set all outputs to 0
-    delay( 100);
+  PIXEL_DDR |= onBits;         // Set used pins to output mode
+
+  // This eems to reset some stuck pixels and leaves all outputs cleanly low
+  PIXEL_PORT |= onBits;       // Set all outputs to 1
+  delay( 100);
+  PIXEL_PORT &= ~onBits;       // Set all outputs to 0
+  delay( 100);
 
   
 }
@@ -1094,7 +1094,9 @@ void loop() {
         const char* Message = command.c_str();
 
  
-        scrollString(  Message + "          " );
+        scrollString( Message);
+        drawString( "WELCOME" , x  );
+        x++;
 
         delay(1000);
         
@@ -1105,3 +1107,4 @@ void loop() {
 }
 
 }
+//////
