@@ -2,6 +2,9 @@
     "files.associations": {
         "arduino": "c",
         "arduino_ite01": "c",
-        "arduino_02": "c"
+        "arduino_02": "c",
+        "arduino_00": "c",
+        "arduino_00_simpscrol": "c",
+        "arduino_04_test": "cpp"
     }
 }
