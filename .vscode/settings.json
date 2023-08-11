@@ -5,6 +5,7 @@
         "arduino_02": "c",
         "arduino_00": "c",
         "arduino_00_simpscrol": "c",
-        "arduino_04_test": "cpp"
+        "arduino_04_test": "cpp",
+        "arduino_03_working": "c"
     }
 }
