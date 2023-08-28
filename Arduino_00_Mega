@@ -2,8 +2,9 @@
 #include <Arduino.h>
 
 #define PIXEL_COUNT 144  // Number of pixels in the string. 
-#define PIXEL_PORT PORTK // Port of the pin the pixels are connected to
-#define PIXEL_DDR DDRK // Port of the pin the pixels are connected to
+#define PIXEL_PORT  PORTK // Port of the pin the pixels are connected to
+#define PIXEL_DDR   DDRK // Port of the pin the pixels are connected to
+
 
 static const uint8_t onBits=0b11111110;   // Bit pattern to write to port to turn on all pins connected to LED strips. 
                                           // If you do not want to use all 8 pins, you can mask off the ones you don't want
